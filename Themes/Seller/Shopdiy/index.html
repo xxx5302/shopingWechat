@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <?php $shoname_name = D('Home/Front')->get_config_by_name('shoname'); ?>
+  <title><?php echo $shoname; ?></title>
+  <link rel="shortcut icon" href="" />
+        
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+ 
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->  
+
+<link href="./resource/css/bootstrap.min.css?v=201903260001" rel="stylesheet">
+<link href="./resource/css/common.css?v=201903260001" rel="stylesheet">
+<script type="text/javascript">
+            window.sysinfo = {
+            <?php if (!empty($_W['uniacid']) ){ ?>'uniacid': '{$_W['uniacid']}',<?php } ?>
+			
+            <?php if( !empty($_W['acid'])  ){ ?>'acid': '{$_W['acid']}',<?php } ?>
+			
+            <?php if (!empty($_W['openid']) ) { ?>'openid': '{$_W['openid']}',<?php } ?>
+			
+            <?php if( !empty($_W['uid']) ) {  ?>'uid': '{$_W['uid']}',<?php } ?>
+			
+            'isfounder': <?php if (!empty($_W['isfounder']) ) { ?>1<?php  }else{  ?>0<?php } ?>,
+			
+            'siteroot': '{$_W['siteroot']}',
+                    'siteurl': '{$_W['siteurl']}',
+                    'attachurl': '{$_W['attachurl']}',
+                    'attachurl_local': '{$_W['attachurl_local']}',
+                    'attachurl_remote': '{$_W['attachurl_remote']}',
+                    'module' : {'url' : '<?php if( defined('MODULE_URL') ) { ?>{MODULE_URL}<?php } ?>', 'name' : '<?php if (defined('IN_MODULE') ) { ?>{IN_MODULE}<?php } ?>'},
+            'cookie' : {'pre': ''},
+            'account' : {:json_encode($_W['account'])},
+            };
+</script>
+
+<script type="text/javascript" src="./resource/js/lib/jquery-1.11.1.min.js"></script>
+<script src="/static/js/diy/vue.min.js"></script>
+<script src="/static/js/diy/ddsort.js"></script>
+
+<script>
+	var random=Math.random();
+	document.write('<link href="/static/css/diy/shopdiy.css?v='+random+'" rel="stylesheet" type="text/css"/>');
+</script>
+<script>
+	var random=Math.random();
+	document.write('<link href="/static/js/diy/color_picker/css/colorpicker.css?v='+random+'" rel="stylesheet" type="text/css"/>');
+</script>
+
+
+<script type="text/javascript" src="./resource/js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="./resource/js/app/util.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/app/common.min.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/require.js?v=201903260001"></script>
+<script type="text/javascript" src="./resource/js/lib/jquery.nice-select.js?v=201903260001"></script>
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+ <link href="/static/css/snailfish.css" rel="stylesheet">
+<script>
+
+    //初始化高度
+    $(function(){
+        var lf_height =  $(document).height() - $('#modify-view').offset().top -28;
+        $('#modify-view').css('height',lf_height +'px');
+        $('.all_component_list').css('height',lf_height +'px');
+    })
+</script>
+</head>
+<body layadmin-themealias="default">
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-body" >
+			<!-- begin modify -->
+			<div id="modify-view">
+				<!-- left component begin -->
+				<div class="all_component_list">
+					<div class="componnet_list_box">
+						<div class="component_title">
+							<img src="/static/images/diy/down.png">基础组件
+						</div>
+						<ul>
+							<li title="文本" v-on:click='addSzyComponent({ title : "『文本』", textColor : "#333333", "defaultTextColor": "#333333", "alignStyle": "center", subTitle : "副标题", "marginTop": 0, "padding": 0, backgroundColor : "", "link" : {}, "fontSize" : 16, "fontSizeSub" : 14, "colorSub": "#999", "defaultColorSub": "#999", "style": 1, "sub": 0, "styleName": "模板一", "isShowMore": 0, "fontWeight": 600, "moreText": "查看更多", "moreLink" : {}, "btnColor": "#999", "defaultBtnColor": "#999" , type : "text",  title : "文本", max_count : 0, addon_name : "", controller : "text", is_delete : "0" })'>
+								<img src="/static/images/diy/text.png">
+								<span>文本</span>
+							</li>
+							<li title="公告" v-on:click='addSzyComponent("notice")'>
+								<img src="/static/images/diy/notice.png">
+								<span>公告</span>
+							</li>
+							<li title="弹出广告" v-on:click='addSzyComponent("popadv")'>
+								<img src="/static/images/diy/ad.png">
+								<span>弹出广告</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- left component end -->
+				<!--->
+				<!-- center component begin -->
+				<div class="preview-box">
+
+					<div class="preview-div">
+						<div class="preview-screen">
+							<button class="layui-btn layui-btn-primary position-page-btn" v-on:click="changeCurrentIndex(-99)" >页面设置</button>
+							<div class="view-wrap" >
+								<div class="screen_head">
+									<div class="preview-head_div" v-bind:style="{ backgroundColor : global.topNavColor,color:global.textNavColor}">
+										<div class="search">
+											<span v-bind:style="{ textAlign:global.textImgPosLink}">{{global.title}}</span>
+										</div>
+									</div>
+
+									<!-- 全局设置项目 begin -->
+									<div v-bind:class="{selected : currentIndex==-99}" v-bind:data-sort="-99" style="display:none;" v-show="data.length==0 || currentIndex==-99">
+										<div class="edit-attribute">
+											<div class="attr-wrap">
+												<div class="restore-wrap">
+													<h2 class="attr-title">页面设置</h2>
+													<div class="layui-form-item">
+														<label class="layui-form-label sm">页面名称</label>
+														<div class="layui-input-block">
+															<input type="text" v-model="global.title" placeholder="请输入页面名称" class="layui-input" maxlength="15">
+														</div>
+													</div>
+													<div class="layui-form-item ns-icon-radio" >
+														<label class="layui-form-label sm">展示位置</label>
+														<div class="layui-input-block">
+															<template v-for="(item, index) in textImgPositionList" v-bind:k="index">
+																<span v-bind:class="{'layui-hide':item.value != global.textImgPosLink}">{{item.text}}</span>
+															</template>
+															<ul class="ns-icon">
+																<li v-for="(item, index) in textImgPositionList" v-bind:k="index" v-bind:class="{'ns-text-color ns-border-color ns-bg-color-diaphaneity':item.value == global.textImgPosLink}" @click="global.textImgPosLink = item.value">
+																	<img v-if="item.value == global.textImgPosLink" :src="item.selectedSrc" />
+																	<img v-else :src="item.src" />
+																</li>
+															</ul>
+														</div>
+													</div>
+
+
+													<div class="template-edit-title">
+														<h3>页面显示样式</h3>
+														<i class="layui-icon layui-icon-down" onclick="closeBox(this)"></i>
+													</div>
+
+													<div class="template-edit-wrap">
+														<template>
+															<color v-bind:data="{ field : 'bgColor', label : '页面颜色', value : global.bgColor, defaultcolor : '#ffffff', global: 1 }"></color>
+															<color v-bind:data="{ field : 'topNavColor', label : '顶部颜色', value : global.topNavColor, defaultcolor : '#ffffff', global: 1 }"></color>
+															<color v-bind:data="{ field : 'textNavColor', label : '标题颜色', value : global.textNavColor, defaultcolor : '#333333', global: 1 }"></color>
+														</template>
+														<div class="layui-form-item ns-checkbox-wrap">
+															<label class="layui-form-label sm">顶部透明</label>
+															<div class="layui-input-block">
+																<span v-if="global.topNavbg == true">是</span>
+																<span v-else>否</span>
+																<div v-if="global.topNavbg == true" v-on:click="global.topNavbg = false" class="layui-unselect layui-form-checkbox layui-form-checked" lay-skin="primary"><i class="layui-icon layui-icon-ok"></i></div>
+																<div v-else v-on:click="global.topNavbg = true" class="layui-unselect layui-form-checkbox" lay-skin="primary"><i class="layui-icon layui-icon-ok"></i></div>
+															</div>
+														</div>
+														<div class="layui-form-item">
+															<label class="layui-form-label sm">背景图片</label>
+															<div class="layui-input-block ns-img-upload">
+																<img-sec-upload v-bind:data="{ data : global, field : 'bgUrl', text: '' }"></img-sec-upload>
+															</div>
+														</div>
+													</div>
+
+
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+									<!-- 全局设置项目 end -->
+
+								</div>
+								<!--画布中心 begin -->
+								<div class="screen_center" v-bind:style="{ backgroundColor : global.bgColor,backgroundImage : 'url('+global.bgUrl+')' }" >
+									<template v-for="(nc,index) in data" v-bind:k="index">
+										<div v-bind:data-index="index" v-on:click="changeCurrentIndex(nc.index)" v-bind:class="{ 'draggable-element nc-border-color-selected' : true,selected : currentIndex == nc.index }" v-bind:data-sort="index">
+											<div class="component-title">
+												<cm-construct v-bind:data="data[index]">
+												<!-- text begin -->
+												<template v-if="nc.type == 'text'" slot="content">
+														<div class="preview-draggable">
+															<div class="preview-box" v-bind:style="{textAlign: nc.alignStyle, backgroundColor : nc.backgroundColor, margin : nc.marginTop + 'px 15px 0'}">
+																<!-- 图一 -->
+																<div class="text-title" v-bind:class="'text-title-'+ nc.style" v-if="nc.style == 1">
+																	<div class="text-title-box" v-show="nc.title">
+																		<span class="text-title-con" v-bind:style="{ fontSize : nc.fontSize + 'px', color : nc.textColor, opacity: nc.textColor ? 1 : 0, padding: '0 7px' }">{{ nc.title }}</span>
+																		<span class="line-left" v-bind:style="{ background: nc.textColor }"></span>
+																		<span class="line-right" v-bind:style="{ background: nc.textColor }"></span>
+																	</div>
+																</div>
+															</div>
+															<i data-disabled="1" class="del">x</i>
+														</div>
+														<div class="selected-element" >
+															<div class="edit-attribute" data-have-edit="1" v-show="currentIndex==index">
+																<div class="attr-wrap" >
+																	<div class="attr-title">
+																		{{data.name}}
+																	</div>
+
+																	<div class="layui-form-item">
+																		<label class="layui-form-label sm">文本名称</label>
+																		<div class="layui-input-block">
+																			<input type="text" v-model="nc.title" v-bind:id="'title_'+index" placeholder="请输入文本" class="layui-input">
+																		</div>
+																	</div>
+																	<div class="template-edit-title">
+																		<h3>文字显示样式</h3>
+																		<i class="layui-icon layui-icon-down" onclick="closeBox(this)"></i>
+																	</div>
+																	<div class="template-edit-wrap">
+																		<template>
+																			<text-font-size v-bind:data="{ field : 'fontSize', label : '文字大小', max: 16 }"></text-font-size>
+																			<color v-bind:data="{ field : 'textColor', 'label' : '文本颜色', 'defaultcolor': '#333333' }"></color>
+																			<font-weight v-show="nc.sub == 1"></font-weight>
+																		</template>
+																	</div>
+
+																</div>
+															</div>
+														</div>
+
+												</template>
+												<!-- text end -->
+												</cm-construct>
+											<!-- notice begin -->
+
+											<!-- notice end-->
+											<!-- popadv begin -->
+
+											<!-- popadv end-->
+											</div>
+										</div>
+									</template>
+
+
+
+
+								</div>
+								<!--画布中心 end   -->
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- center component end -->
+
+
+				<!-- 底部 保存 begin -->
+				<div class="custom-save">
+					<button class="layui-btn ns-bg-color save">保存</button>
+				</div>
+				<!-- 底部 end -->
+			</div>
+			<!-- end modify -->
+		</div>
+	</div>
+</div>
+<script  type="text/javascript">
+    document.write('<script src="/static/js/diy/color_picker/js/colorpicker.js?t="'+Math.random()+'><\/script>');
+</script>
+<script  type="text/javascript">
+    document.write('<script src="/static/js/diy/color_picker/js/paigusu.min.js?t="'+Math.random()+'><\/script>');
+</script>
+
+<script  type="text/javascript">
+    document.write('<script src="/static/js/diy/common.js?t="'+Math.random()+'><\/script>');
+</script>
+<script  type="text/javascript">
+    document.write('<script src="/static/js/diy/szycompontents.js?t="'+Math.random()+'><\/script>');
+</script>
+<script  type="text/javascript">
+    document.write('<script src="/static/js/diy/szydiy.js?t="'+Math.random()+'><\/script>');
+</script>
+
+
+
+<script src="/layuiadmin/layui/layui.js"></script>
+<script>
+	layui.config({
+		base: '/layuiadmin/' //静态资源所在路径
+	}).extend({
+		index: 'lib/index' //主入口模块
+	}).use('index');
+</script>
+
+<script>
+//由于模块都一次性加载，因此不用执行 layui.use() 来加载对应模块，直接使用即可：
+var layer = layui.layer;
+var $;
+
+var cur_open_div;
+
+layui.use(['jquery', 'layer','form'], function(){ 
+  $ = layui.$;
+  var form = layui.form;
+
+})
+
+</script>
+<!--上传图片组件，　begin　-->
+<script>
+
+    function showImageDialog(elm, opts, options) {
+
+        require(["util"], function(util){
+
+            var ipt = $(elm).prev();
+
+            var val = ipt.val();
+
+            var img = $(elm);
+
+            options = {'class_extra':'order_menu_icon','global':false,'direct':true,'multiple':false,'fileSizeLimit':10240};
+
+            util.image(val, function(url){
+
+                if(url.url){
+
+                    if(img.length > 0){
+
+                        img.get(0).src = url.url;
+
+                    }
+
+                    ipt.val(url.attachment);
+
+                    ipt.attr("filename",url.filename);
+
+                    ipt.attr("url",url.url);
+
+                }
+
+                if(url.media_id){
+
+                    if(img.length > 0){
+
+                        img.get(0).src = url.url;
+
+                    }
+
+                    ipt.val(url.media_id);
+
+                }
+
+            }, options);
+
+        });
+
+    }
+
+    function deleteImage(elm){
+
+        $(elm).prev().attr("src", "./resource/images/nopic.jpg");
+
+        $(elm).parent().find("input").val("");
+
+    }
+
+</script>
+
+</body>

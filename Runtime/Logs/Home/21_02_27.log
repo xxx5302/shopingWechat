@@ -1,4 +1,0 @@
-[ 2021-02-27T07:59:03+08:00 ] 36.104.28.205 /wxapp.php?i=undefined&t=undefined&v=undefined&from=wxapp&c=entry&a=wxapp&do=index&m=lionfish_comshop&sign=6f2266dd9834119bbab4e0f636fd5f59&controller=order.orderlist&page=1&token=&soli_id=3
-ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'and o.type != "ignore"  and o.soli_id = 3   
-	                    order by o.da' at line 3
-
