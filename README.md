@@ -1,1 +1,1 @@
-shopingWechat
+shopingGit
